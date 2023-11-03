@@ -10,8 +10,8 @@ use crate::{validation::NumberCriteria, Schema};
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 #[serde(untagged)]
 pub enum Property {
-    Value(PropertyInstance),
     Ref(RefProperty),
+    Value(PropertyInstance),
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -81,6 +81,9 @@ impl RefProperty {
     }
 }
 
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq)]
+pub struct Empty {}
+
 /// Represents the [Instance Data Model](https://json-schema.org/latest/json-schema-core.html#rfc.section.4.2.1)
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 #[serde(tag = "type", rename_all = "camelCase")]
@@ -108,6 +111,9 @@ pub enum PropertyInstance {
     },
 
     String,
+
+    #[serde(untagged)]
+    Empty(Empty),
 }
 
 impl PropertyInstance {
@@ -200,6 +206,7 @@ impl PropertyInstance {
             }
 
             (Object { .. }, _) => Err(vec![format!("invalid object")]),
+            (Empty { .. }, _) => Ok(()),
         }
     }
 }
