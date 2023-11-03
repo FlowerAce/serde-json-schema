@@ -166,6 +166,15 @@ mod examples {
     }
 
     #[test]
+    fn all_array() {
+        let schema: Schema =
+            serde_json::from_str(include_str!("./fixtures/all.schema.json")).unwrap();
+        let spec = schema.specification();
+        assert!(spec.is_some());
+        dbg!(spec);
+    }
+
+    #[test]
     fn green_door_example() {
         let schema: Schema =
             serde_json::from_str(include_str!("./fixtures/green_door.schema.json")).unwrap();
