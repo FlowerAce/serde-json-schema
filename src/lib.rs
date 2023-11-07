@@ -29,6 +29,7 @@
 use serde::{Deserialize, Serialize};
 pub use url::Url;
 
+use std::collections::BTreeMap;
 use std::collections::HashMap;
 pub use std::convert::TryFrom;
 
@@ -104,7 +105,7 @@ impl Schema {
         }
     }
 
-    pub fn properties(&self) -> Option<&HashMap<String, Property>> {
+    pub fn properties(&self) -> Option<&BTreeMap<String, Property>> {
         match self.specification() {
             Some(PropertyInstance::Object { properties, .. }) => Some(properties),
             _ => None,

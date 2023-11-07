@@ -2,7 +2,7 @@
 
 use serde::{Deserialize, Serialize};
 
-use std::{collections::HashMap, str::Split};
+use std::{collections::BTreeMap, str::Split};
 
 use crate::{validation::NumberCriteria, Schema};
 
@@ -22,7 +22,7 @@ pub struct RefProperty {
 
 #[derive(Debug)]
 enum Data<'a> {
-    Map(&'a HashMap<String, Property>),
+    Map(&'a BTreeMap<String, Property>),
     Prop(&'a Property),
     Instance(&'a PropertyInstance),
     Schema(&'a Schema),
@@ -35,14 +35,14 @@ fn get_items(p: &Property) -> Option<&PropertyInstance> {
     }
 }
 
-fn get_properties_instance(p: &PropertyInstance) -> Option<&HashMap<String, Property>> {
+fn get_properties_instance(p: &PropertyInstance) -> Option<&BTreeMap<String, Property>> {
     match p {
         PropertyInstance::Object { properties, .. } => Some(properties),
         _ => None,
     }
 }
 
-fn get_properties(p: &Property) -> Option<&HashMap<String, Property>> {
+fn get_properties(p: &Property) -> Option<&BTreeMap<String, Property>> {
     match p {
         Property::Value(v) => get_properties_instance(v),
         _ => None,
@@ -97,7 +97,7 @@ pub enum PropertyInstance {
         criteria: NumberCriteria,
     },
     Object {
-        properties: HashMap<String, Property>,
+        properties: BTreeMap<String, Property>,
         required: Option<Vec<String>>,
     },
 
